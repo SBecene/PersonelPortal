@@ -28,10 +28,17 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Giris}/{action=Index}/{id?}");
 
-using (var scope = app.Services.CreateScope())
+try
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.Database.EnsureCreated();
+    }
+}
+catch (Exception ex)
+{
+    // Hata olsa bile uygulamanýn çökmesini engeller
+    Console.WriteLine("Veritabaný oluþturma hatasý: " + ex.Message);
 }
 app.Run();
