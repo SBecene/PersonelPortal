@@ -1,22 +1,20 @@
-# ---------- BUILD STAGE ----------
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# csproj kopyala
 COPY PersonelPortal.csproj ./
-RUN dotnet restore
+RUN dotnet restore "./PersonelPortal.csproj"
 
-# tüm dosyaları kopyala
-COPY . .
-RUN dotnet publish -c Release -o /app/publish
+COPY . ./
+RUN dotnet publish "./PersonelPortal.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# ---------- RUNTIME STAGE ----------
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-COPY --from=build /app/publish .
-
+# Render genelde PORT environment variable verir
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "PersonelPortal.dll"]
