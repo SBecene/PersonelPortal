@@ -1,0 +1,130 @@
+﻿@model List<PersonelPortal.Models.Personel>
+
+@{
+    ViewData["Title"] = "Personel Rehberi";
+}
+
+<div class="sayfa-arka">
+    <div class="ust-bar">
+        <a class="btn" href="/AnaSayfa/Index">⬅ Ana Sayfa</a>
+        <a class="btn btn-primary" href="/Rehber/Create">+ Yeni Personel</a>
+    </div>
+
+    <h1 class="sayfa-baslik">Personel Rehberi</h1>
+
+    <table class="rehber-tablo">
+        <thead>
+            <tr>
+                <th>Ad Soyad</th>
+                <th>Ünvan</th>
+                <th>Birim</th>
+                <th>Telefon</th>
+                <th style="width:210px;">İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.AdSoyad</td>
+                    <td>@p.Unvan</td>
+                    <td>@p.Birim</td>
+                    <td>@p.Telefon</td>
+                    <td>
+                        <a class="btn btn-mini" href="/Rehber/Edit/@p.Id">Düzenle</a>
+                        <a class="btn btn-mini btn-danger" href="/Rehber/Delete/@p.Id">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    body {
+        background: #fff3a6;
+        color: #000;
+    }
+
+    .sayfa-arka {
+        min-height: 100vh;
+        padding: 40px;
+        background: #fff3a6;
+    }
+
+    .sayfa-baslik {
+        font-size: 34px;
+        font-weight: 800;
+        margin: 16px 0 24px;
+    }
+
+    .ust-bar {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-bottom: 8px;
+    }
+
+    .rehber-tablo {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255,255,255,0.6);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .rehber-tablo th, .rehber-tablo td {
+            padding: 14px 16px;
+            border: 2px solid #000;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .rehber-tablo th {
+            background: rgba(255,255,255,0.8);
+            font-weight: 800;
+        }
+
+        .rehber-tablo tr:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        border: 2px solid #000;
+        color: #000;
+        font-weight: 800;
+        background: rgba(255,255,255,0.55);
+    }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.8);
+        }
+
+    .btn-primary {
+        background: #000;
+        color: #fff;
+    }
+
+        .btn-primary:hover {
+            background: #333;
+        }
+
+    .btn-mini {
+        padding: 8px 10px;
+        margin-right: 6px;
+    }
+
+    .btn-danger {
+        background: #b00020;
+        color: #fff;
+        border-color: #000;
+    }
+
+        .btn-danger:hover {
+            background: #8f001a;
+        }
+</style>

@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Giriş";
+}
+
+<style>
+    body {
+        background: #fff3a6; /* soft sarı */
+        color: #000;
+    }
+
+    .login-wrapper {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 40px;
+    }
+
+    .login-card {
+        width: 420px;
+        background: #ffffff;
+        border: 2px solid #000;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+        .login-card h2 {
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    .btn-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .btn-white {
+        background: #fff;
+        border: 2px solid #000;
+        color: #000;
+        padding: 10px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        text-align: center;
+        width: 50%;
+        font-weight: 600;
+    }
+
+        .btn-white:hover {
+            opacity: 0.9;
+        }
+
+    .guest-area {
+        margin-top: 18px;
+        text-align: center;
+    }
+
+    .btn-guest {
+        background: #1e66ff; /* mavi */
+        color: #000; /* yazı siyah */
+        border: 2px solid #000;
+        padding: 10px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: 700;
+        min-width: 220px;
+    }
+
+        .btn-guest:hover {
+            opacity: 0.92;
+        }
+</style>
+
+<div class="container">
+    <div class="mt-3" style="font-size:22px; font-weight:800;">
+        Personel Portal
+    </div>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h2>Giriş</h2>
+
+            <div class="mb-3">
+                <label class="form-label">Kullanıcı Adı</label>
+                <input class="form-control" placeholder="ör: samet.becene" />
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label">Şifre</label>
+                <input type="password" class="form-control" placeholder="••••••••" />
+            </div>
+
+            <div class="btn-row">
+                <a class="btn-white" href="#">Giriş</a>
+                <a class="btn-white" href="#">Şifremi Unuttum</a>
+            </div>
+
+            <div class="guest-area">
+                <a class="btn-guest" href="/AnaSayfa/Index">Misafir Olarak Devam Et</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="sayfa-arka">
+    <a href="/Giris/Index" class="cikis-btn">Çıkış</a>
+
+    <div class="ust-baslik">
+        <div class="logo">Personel Portal</div>
+    </div>
+
+    <div class="kutu-grid">
+        <a class="kutu" href="/Rehber/Index">
+            <div class="kutu-ikon">☎</div>
+            <div class="kutu-baslik">Rehber</div>
+        </a>
+
+        <a class="kutu" href="/Izin/Index">
+            <div class="kutu-ikon">📝</div>
+            <div class="kutu-baslik">İzin Bilgisi</div>
+        </a>
+
+        <a class="kutu" href="/Yemek/Index">
+            <div class="kutu-ikon">🍴</div>
+            <div class="kutu-baslik">Yemek Listesi</div>
+        </a>
+
+        <a class="kutu" href="/Siparis/Index">
+            <div class="kutu-ikon">🧾</div>
+            <div class="kutu-baslik">Sipariş Listesi</div>
+        </a>
+    </div>
+</div>
+
+<style>
+    body {
+        background: #fff3a6;
+        color: #000;
+    }
+
+    .sayfa-arka {
+        min-height: 100vh;
+        padding: 30px 40px;
+        background: #fff3a6;
+        position: relative; /* çıkış butonu için */
+    }
+
+    .ust-baslik {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: .5px;
+    }
+
+    .kutu-grid {
+        max-width: 900px;
+        margin: 40px auto 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 26px;
+    }
+
+    .kutu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 170px;
+        border: 3px solid #000;
+        border-radius: 16px;
+        text-decoration: none;
+        color: #000;
+        background: rgba(255, 255, 255, 0.35);
+        transition: transform .12s ease, box-shadow .12s ease;
+        gap: 10px;
+    }
+
+    .kutu:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .kutu-ikon {
+        font-size: 34px;
+        line-height: 1;
+    }
+
+    .kutu-baslik {
+        font-size: 22px;
+        font-weight: 800;
+    }
+
+    .cikis-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        padding: 10px 18px;
+        background: #000;
+        color: #fff;
+        font-weight: 700;
+        border-radius: 10px;
+        text-decoration: none;
+    }
+
+    .cikis-btn:hover {
+        background: #333;
+    }
+
+    /* Mobil uyum (Razor için @@media) */
+    @@media (max-width: 768px) {
+        .kutu-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .sayfa-arka {
+            padding: 20px;
+        }
+
+        .cikis-btn {
+            right: 20px;
+        }
+    }
+</style

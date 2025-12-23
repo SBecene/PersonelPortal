@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "İzin Talebi";
+}
+
+<div class="sayfa-arka">
+    <div class="ust-baslik">
+        <div class="logo">Personel Portal</div>
+    </div>
+
+    <div class="izin-kutu">
+        <h2>İzin Talep Sayfası</h2>
+
+        <form>
+            <div class="form-grup">
+                <label>İzin Başlangıç Tarihi</label>
+                <input type="date" />
+            </div>
+
+            <div class="form-grup">
+                <label>İzin Bitiş Tarihi</label>
+                <input type="date" />
+            </div>
+
+            <div class="form-grup">
+                <label>Açıklama</label>
+                <textarea rows="4" placeholder="İzin açıklaması giriniz..."></textarea>
+            </div>
+
+            <button type="submit" class="izin-btn">İzin Talep Et</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        background: #fff3a6;
+        color: #000;
+    }
+
+    .sayfa-arka {
+        min-height: 100vh;
+        padding: 30px 40px;
+        background: #fff3a6;
+    }
+
+    .ust-baslik {
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .izin-kutu {
+        max-width: 420px;
+        margin: 0 auto;
+        background: rgba(255,255,255,0.4);
+        border: 3px solid #000;
+        border-radius: 16px;
+        padding: 25px;
+    }
+
+        .izin-kutu h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+    .form-grup {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .form-grup label {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .form-grup input,
+        .form-grup textarea {
+            padding: 8px;
+            border-radius: 8px;
+            border: 2px solid #000;
+            font-size: 14px;
+        }
+
+    .izin-btn {
+        margin-top: 10px;
+        width: 100%;
+        padding: 10px;
+        font-weight: 700;
+        background: #000;
+        color: #fff;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+        .izin-btn:hover {
+            background: #333;
+        }
+</style>

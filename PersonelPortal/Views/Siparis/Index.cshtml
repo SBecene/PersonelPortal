@@ -1,0 +1,397 @@
+﻿@{
+    ViewData["Title"] = "Sipariş";
+}
+
+<div class="sayfa-arka">
+
+    <!-- Üst bar: geri + sepet -->
+    <div class="ust-bar">
+        <a href="/AnaSayfa/Index" class="geri-btn">← Ana Sayfa</a>
+
+        <div class="sepet">
+            <div class="sepet-baslik">🧺 Sepet</div>
+            <div id="sepetListe" class="sepet-liste">
+                <div class="bos">Sepet boş.</div>
+            </div>
+            <div class="sepet-alt">
+                <div class="toplam">
+                    Toplam: <span id="toplamTutar">0</span> TL
+                </div>
+                <button class="temizle-btn" type="button" onclick="sepetiTemizle()">Sepeti Temizle</button>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="baslik">Kantin Sipariş</h1>
+
+    <div class="urun-grid">
+        <!-- Su -->
+        <div class="urun-kart">
+            <div class="ikon">💧</div>
+            <div class="urun-ad">Su</div>
+            <div class="fiyat">10 TL</div>
+            <div class="adet-satir">
+                <label>Adet</label>
+                <input id="adet_su" type="number" min="1" value="1" />
+            </div>
+            <button class="ekle-btn" type="button" onclick="sepeteEkle('Su', 10, 'adet_su')">Sepete Ekle</button>
+        </div>
+
+        <!-- Çay -->
+        <div class="urun-kart">
+            <div class="ikon">🍵</div>
+            <div class="urun-ad">Çay</div>
+            <div class="fiyat">5 TL</div>
+            <div class="adet-satir">
+                <label>Adet</label>
+                <input id="adet_cay" type="number" min="1" value="1" />
+            </div>
+            <button class="ekle-btn" type="button" onclick="sepeteEkle('Çay', 5, 'adet_cay')">Sepete Ekle</button>
+        </div>
+
+        <!-- Türk Kahvesi -->
+        <div class="urun-kart">
+            <div class="ikon">☕</div>
+            <div class="urun-ad">Türk Kahvesi</div>
+            <div class="fiyat">15 TL</div>
+            <div class="adet-satir">
+                <label>Adet</label>
+                <input id="adet_turkKahvesi" type="number" min="1" value="1" />
+            </div>
+            <button class="ekle-btn" type="button" onclick="sepeteEkle('Türk Kahvesi', 15, 'adet_turkKahvesi')">Sepete Ekle</button>
+        </div>
+
+        <!-- Nescafe -->
+        <div class="urun-kart">
+            <div class="ikon">☕</div>
+            <div class="urun-ad">Nescafe</div>
+            <div class="fiyat">15 TL</div>
+            <div class="adet-satir">
+                <label>Adet</label>
+                <input id="adet_nescafe" type="number" min="1" value="1" />
+            </div>
+            <button class="ekle-btn" type="button" onclick="sepeteEkle('Nescafe', 15, 'adet_nescafe')">Sepete Ekle</button>
+        </div>
+
+        <!-- Soda -->
+        <div class="urun-kart">
+            <div class="ikon">🫧</div>
+            <div class="urun-ad">Soda</div>
+            <div class="fiyat">10 TL</div>
+            <div class="adet-satir">
+                <label>Adet</label>
+                <input id="adet_soda" type="number" min="1" value="1" />
+            </div>
+            <button class="ekle-btn" type="button" onclick="sepeteEkle('Soda', 10, 'adet_soda')">Sepete Ekle</button>
+        </div>
+
+        <!-- Meyve Suyu -->
+        <div class="urun-kart">
+            <div class="ikon">🧃</div>
+            <div class="urun-ad">Meyve Suyu</div>
+            <div class="fiyat">25 TL</div>
+            <div class="adet-satir">
+                <label>Adet</label>
+                <input id="adet_meyveSuyu" type="number" min="1" value="1" />
+            </div>
+            <button class="ekle-btn" type="button" onclick="sepeteEkle('Meyve Suyu', 25, 'adet_meyveSuyu')">Sepete Ekle</button>
+        </div>
+
+        <!-- Kola -->
+        <div class="urun-kart">
+            <div class="ikon">🥤</div>
+            <div class="urun-ad">Kola</div>
+            <div class="fiyat">25 TL</div>
+            <div class="adet-satir">
+                <label>Adet</label>
+                <input id="adet_kola" type="number" min="1" value="1" />
+            </div>
+            <button class="ekle-btn" type="button" onclick="sepeteEkle('Kola', 25, 'adet_kola')">Sepete Ekle</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Sepet: { urunAdi: { adet: number, fiyat: number } }
+    const sepet = {};
+
+    function sepeteEkle(urunAdi, fiyat, adetInputId) {
+        const adetInput = document.getElementById(adetInputId);
+        let adet = parseInt(adetInput.value || "1", 10);
+        if (isNaN(adet) || adet < 1) adet = 1;
+
+        if (!sepet[urunAdi]) {
+            sepet[urunAdi] = { adet: 0, fiyat: fiyat };
+        }
+        sepet[urunAdi].adet += adet;
+
+        adetInput.value = 1;
+        sepetiCiz();
+    }
+
+    function urunSil(urunAdi) {
+        delete sepet[urunAdi];
+        sepetiCiz();
+    }
+
+    function sepetiTemizle() {
+        for (const k in sepet) delete sepet[k];
+        sepetiCiz();
+    }
+
+    function sepetiCiz() {
+        const liste = document.getElementById("sepetListe");
+        const toplamSpan = document.getElementById("toplamTutar");
+
+        let toplam = 0;
+        const urunler = Object.keys(sepet);
+
+        if (urunler.length === 0) {
+            liste.innerHTML = '<div class="bos">Sepet boş.</div>';
+            toplamSpan.textContent = "0";
+            return;
+        }
+
+        let html = "";
+        for (const urunAdi of urunler) {
+            const item = sepet[urunAdi];
+            const araToplam = item.adet * item.fiyat;
+            toplam += araToplam;
+
+            html +=
+                '<div class="sepet-item">' +
+                    '<div class="sepet-sol">' +
+                        '<div class="sepet-urun">' + urunAdi + '</div>' +
+                        '<div class="sepet-detay">' + item.adet + ' x ' + item.fiyat + ' TL = <b>' + araToplam + ' TL</b></div>' +
+                    '</div>' +
+                    '<button class="sil-btn" type="button" onclick="urunSil(\'' + urunAdi.replace(/'/g, "\\'") + '\')">Sil</button>' +
+                '</div>';
+        }
+
+        liste.innerHTML = html;
+        toplamSpan.textContent = toplam.toString();
+    }
+</script>
+
+<style>
+    body {
+        background: #fff3a6;
+        color: #000;
+    }
+
+    .sayfa-arka {
+        min-height: 100vh;
+        padding: 30px 40px;
+        background: #fff3a6;
+    }
+
+    .ust-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 10px;
+    }
+
+    .geri-btn {
+        display: inline-block;
+        padding: 10px 14px;
+        border: 3px solid #000;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #000;
+        font-weight: 900;
+        background: rgba(255,255,255,0.35);
+    }
+
+        .geri-btn:hover {
+            transform: translateY(-1px);
+        }
+
+    .baslik {
+        font-size: 34px;
+        font-weight: 900;
+        margin: 8px 0 18px 0;
+    }
+
+    /* Sepet */
+    .sepet {
+        width: 320px;
+        border: 3px solid #000;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.35);
+        padding: 12px;
+        position: sticky;
+        top: 18px;
+    }
+
+    .sepet-baslik {
+        font-weight: 900;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .sepet-liste {
+        max-height: 240px;
+        overflow: auto;
+        border-top: 2px solid rgba(0,0,0,0.25);
+        padding-top: 10px;
+    }
+
+    .bos {
+        opacity: 0.8;
+        font-weight: 700;
+    }
+
+    .sepet-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+    }
+
+    .sepet-urun {
+        font-weight: 900;
+    }
+
+    .sepet-detay {
+        font-size: 14px;
+    }
+
+    .sil-btn {
+        border: 3px solid #000;
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: #fff;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .sil-btn:hover {
+            background: #eee;
+        }
+
+    .sepet-alt {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .toplam {
+        font-weight: 900;
+    }
+
+    .temizle-btn {
+        border: 3px solid #000;
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: #000;
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .temizle-btn:hover {
+            background: #333;
+        }
+
+    /* Ürünler */
+    .urun-grid {
+        max-width: 980px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+        align-items: stretch;
+    }
+
+    .urun-kart {
+        border: 3px solid #000;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.35);
+        padding: 16px;
+        text-align: center;
+    }
+
+    .ikon {
+        font-size: 38px;
+        margin-bottom: 6px;
+    }
+
+    .urun-ad {
+        font-size: 22px;
+        font-weight: 900;
+        margin-bottom: 4px;
+    }
+
+    .fiyat {
+        font-size: 16px;
+        font-weight: 900;
+        margin-bottom: 10px;
+    }
+
+    .adet-satir {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0 12px 0;
+        font-weight: 900;
+    }
+
+        .adet-satir input {
+            width: 90px;
+            padding: 8px;
+            border: 2px solid #000;
+            border-radius: 10px;
+            font-weight: 900;
+        }
+
+    .ekle-btn {
+        width: 100%;
+        border: 3px solid #000;
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #000;
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .ekle-btn:hover {
+            background: #333;
+        }
+
+    /* Mobil */
+    @@media (max-width: 992px) {
+        .urun-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .sepet {
+            width: 300px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .sayfa-arka {
+            padding: 20px;
+        }
+
+        .ust-bar {
+            flex-direction: column;
+        }
+
+        .sepet {
+            width: 100%;
+            position: static;
+        }
+
+        .urun-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
