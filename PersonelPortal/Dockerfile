@@ -14,8 +14,8 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["PersonelPortal/PersonelPortal.csproj", "PersonelPortal/"]
-RUN dotnet restore "./PersonelPortal/PersonelPortal.csproj"
+COPY ["PersonelPortal.csproj", "./"]
+RUN dotnet restore "PersonelPortal.csproj"
 COPY . .
 WORKDIR "/src/PersonelPortal"
 RUN dotnet build "./PersonelPortal.csproj" -c %BUILD_CONFIGURATION% -o /app/build
