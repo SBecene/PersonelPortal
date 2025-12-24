@@ -1,19 +1,42 @@
 using Microsoft.EntityFrameworkCore;
 using PersonelPortal.Data;
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
+
+// 1. Veritabaný Baðlantý Ayarý (PostgreSQL)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString, npgsqlOptions => {
+        // Baðlantý kopmalarýna karþý otomatik tekrar deneme ekledik
+        npgsqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+    }));
+
+// 2. MVC Servislerini Ekle
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 3. Veritabaný Tablolarýný Otomatik Oluþturma (Migration Alternatifi)
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        // Tablolar yoksa Render üzerinde otomatik oluþturur
+        context.Database.EnsureCreated();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Veritabaný oluþturulurken hata: " + ex.Message);
+    }
+}
+
+// 4. HTTP Ýstek Kanalý Ayarlarý
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -28,17 +51,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Giris}/{action=Index}/{id?}");
 
-try
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.Database.EnsureCreated();
-    }
-}
-catch (Exception ex)
-{
-    // Hata olsa bile uygulamanýn çökmesini engeller
-    Console.WriteLine("Veritabaný oluþturma hatasý: " + ex.Message);
-}
 app.Run();
